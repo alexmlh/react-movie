@@ -1,6 +1,5 @@
-import React from "react";
-import Search from "./components/Search";
-import Card from "./components/Card";
+import Search from "./components/Search.jsx";
+import Card from "./components/Card.jsx";
 import { useState, useEffect } from "react";
 import { useDebounce } from "react-use";
 import { updateSearchCount, getTrendingMovies } from "./appwrite";
@@ -28,7 +27,7 @@ const App = () => {
     () => {
       setDebouncedSearchTerm(searchTerm);
     },
-    500,
+    800,
     [searchTerm]
   );
 
@@ -47,8 +46,13 @@ const App = () => {
         return;
       }
       setMovieList(data.results || []); // Assuming the API returns a 'results' array
-
-      if (query && data.results.length > 0) {
+      console.log(query, data.results[0].title.toLowerCase());
+      if (
+        query &&
+        data.results.length > 0 &&
+        query.trim() === data.results[0].title.toLowerCase()
+      ) {
+        console.log("to appwrite", query, data.results.title);
         await updateSearchCount(query, data.results[0]); // Corrected typo here
       }
     } catch (error) {
@@ -83,14 +87,14 @@ const App = () => {
         <header>
           <img src="hero.png" alt="Hero Banner" />
           <h1>
-            Find <span className="text-gradient">Movies</span> You'll Enjoy
+            Find <span className="text-gradient">Movies</span> Youll Enjoy
             Without the Hassle
           </h1>
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
 
         {trendingMovies.length > 0 && (
-          <section className="trending">
+          <section className="trending " style={{ height: "280px" }}>
             <h2>Trending Movies</h2>
             <ul>
               {trendingMovies.map((movie, index) => (

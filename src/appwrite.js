@@ -11,6 +11,7 @@ const client = new Client()
 const database = new Databases(client);
 
 export const updateSearchCount = async (searchTerm, movie) => {
+  console.log("enter to appwrite");
   if (!searchTerm) {
     console.error("Search term is required");
     return;
